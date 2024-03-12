@@ -18,61 +18,62 @@ import {
   Table,
 } from 'antd';
 import { useEffect, useState } from 'react';
-import { addToCart } from '../../API';
+import { getCart } from '../../API';
 
 import styles from './index.module.css';
 
-const data = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
+const dataSource = [
+  {
+    key: '1',
+    name: 'Mike',
+    age: 32,
+    address: '10 Downing Street',
+  },
+  {
+    key: '2',
+    name: 'John',
+    age: 42,
+    address: '10 Downing Street',
+  },
+];
+
+const columns = [
+  {
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+  },
+  {
+    title: 'Price',
+    dataIndex: 'price',
+    key: 'price',
+  },
+  {
+    title: 'Quantity',
+    dataIndex: 'quantity',
+    key: 'quantity',
+  },
 ];
 
 const Cart = () => {
   const [items, setItems] = useState([]);
 
-  return (
-    <div className={styles.container}>
-      {/* <Table
-        pagination={false}
-        columns={[
-          {
-            title: 'Title',
-            dataIndex: 'title',
-          },
-          {
-            title: 'Price',
-            dataIndex: 'price',
-          },
-          {
-            title: 'Quantity',
-            dataIndex: 'quantity',
-          },
-          {
-            title: 'Total',
-            dataIndex: 'total',
-          },
-        ]}
-        summary={(data) => {
-          const total = data.reduce((pre, current) => {
-            return pre + current.total;
-          }, 0);
-          return <span>Total: ${total}</span>;
-        }}
-      />
-      <Button type='primary'>Checkout Your Cart</Button> */}
+  useEffect(() => {
+    getCart().then((res) => {
+      setItems(res.products);
+    });
+  }, []);
 
-      <Divider orientation='left'>Корзина</Divider>
-      <List
-        size='large'
-        footer={<div>Footer</div>}
-        bordered
-        dataSource={data}
-        renderItem={(item) => <List.Item>{item}</List.Item>}
-      />
-    </div>
+  console.log('items', items);
+
+  return (
+    
   );
 };
+
 export default Cart;
