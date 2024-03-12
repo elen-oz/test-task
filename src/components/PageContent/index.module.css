@@ -1,8 +1,6 @@
 .content {
-  display: flex;
+  /* display: flex; */
   flex: 1;
   overflow-y: auto;
-  margin-top: 2px;
-
-  border: 2px solid green;
+  /* margin-top: 2px; */
 }
