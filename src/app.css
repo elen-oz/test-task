@@ -1,0 +1,29 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+
+  border: 2px solid black;
+}
+
+.soppingCartIcon {
+  font-size: 30px;
+  margin-right: 16px;
+  cursor: pointer;
+}
+.productsContainer {
+  padding: 8px;
+}
+.appMenu {
+  border: none;
+}
+
+.itemCard,
+.itemCardBadge {
+  margin: 8px;
+}
+.itemCardImage {
+  height: 150px !important;
+  object-fit: scale-down;
+}
