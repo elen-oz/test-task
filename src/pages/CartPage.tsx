@@ -19,6 +19,13 @@ import {
   Center,
   HStack,
   Button,
+  AbsoluteCenter,
+  Card,
+  CardBody,
+  CardFooter,
+  Heading,
+  Stack,
+  Spacer,
 } from '@chakra-ui/react';
 
 const CartPage = () => {
@@ -41,66 +48,59 @@ const CartPage = () => {
   return (
     <Box h='100vh' p={2}>
       <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}>
-        <GridItem colSpan={3} bg='papayawhip'>
-          <Text>Корзина</Text>
-
+        <GridItem colSpan={3}>
+          <Text>Cart</Text>
           <List>
-            {/* {isLoading ? (
-              <Center>
-                <Spinner />
-              </Center>
-            ) : ( */}
-            {
+            {cartItems.length === 0 ? (
+              <Box>
+                <AbsoluteCenter>Cart is empty</AbsoluteCenter>
+              </Box>
+            ) : (
               cartItems.map((item) => (
-                <ListItem key={item.id}>
-                  <Flex alignItems='center' gap='2'>
-                    <Box w='100px'>
-                      <Image
-                        src={item.image}
-                        boxSize='100%'
-                        objectFit='cover'
-                        alt='Product Image'
-                      />
-                    </Box>
-
-                    <Accordion allowToggle w='370px'>
-                      <AccordionItem>
-                        <h2>
-                          <AccordionButton>
-                            <Box as='span' flex='1' textAlign='left'>
-                              {item.title}
-                            </Box>
-                            <AccordionIcon />
-                          </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                          {item.description}
-                        </AccordionPanel>
-                      </AccordionItem>
-                    </Accordion>
-
-                    <HStack>
-                      <Text>quantity</Text>
-                      <Text w='50px' textAlign='right'>
-                        {item.price}
-                      </Text>
-                    </HStack>
-                    <Box w='95px'>
-                      <Flex>
-                        <Button onClick={() => handleAddToCart(item)}>+</Button>
-                        <Button>-</Button>
-                      </Flex>
-                      <Button>Remove</Button>
-                    </Box>
-                  </Flex>
-                </ListItem>
+                <Card
+                  key={item.id}
+                  direction={{ base: 'column', sm: 'row' }}
+                  overflow='hidden'
+                  variant='outline'
+                >
+                  <Image
+                    objectFit='cover'
+                    maxW={{ base: '100%', sm: '200px' }}
+                    src={item.image}
+                    alt='Product image'
+                  />
+                  <Stack>
+                    <CardBody>
+                      <Heading size='md'>{item.title}</Heading>
+                      <Text py='2'>{item.description}</Text>
+                    </CardBody>
+                    <CardFooter>
+                      <Button
+                        onClick={() => handleAddToCart(item)}
+                        variant='solid'
+                        colorScheme='blue'
+                      >
+                        +
+                      </Button>
+                      <Button
+                        onClick={() => handleAddToCart(item)}
+                        variant='solid'
+                      >
+                        -
+                      </Button>
+                      <Spacer />
+                      <Button onClick={() => handleAddToCart(item)}>
+                        Remove
+                      </Button>
+                    </CardFooter>
+                  </Stack>
+                </Card>
               ))
-              // )
-            }
+            )}
           </List>
         </GridItem>
-        <GridItem rowSpan={1} colSpan={1} bg='tomato'>
-          <Text>Итого: [сумма] руб.</Text>
+        <GridItem rowSpan={1} colSpan={1} bg='papayawhip'>
+          <Text>Total: 000 RUB</Text>
         </GridItem>
       </Grid>
     </Box>
