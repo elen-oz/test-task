@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart } from '../slices/cartSlise';
+import { addToCart, removeFromCart, decreaseCart } from '../slices/cartSlise';
 
 import {
   Box,
@@ -37,6 +37,10 @@ const CartPage = () => {
 
   const handleRemoveFromCart = (product) => {
     dispatch(removeFromCart(product));
+  };
+
+  const handleDecreaseCart = (product) => {
+    dispatch(decreaseCart(product));
   };
 
   return (
@@ -93,7 +97,11 @@ const CartPage = () => {
                           >
                             +
                           </Button>
-                          <Button ml={2} variant='solid'>
+                          <Button
+                            onClick={() => handleDecreaseCart(item)}
+                            ml={2}
+                            variant='solid'
+                          >
                             -
                           </Button>
                           <Spacer />
