@@ -1,5 +1,6 @@
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../slices/cartSlise';
+
 import {
   Accordion,
   AccordionButton,
@@ -19,15 +20,17 @@ import {
   HStack,
   Button,
 } from '@chakra-ui/react';
-import { addToCart } from '../slices/cartSlise';
 
 const CartPage = () => {
-  const { status, items } = useSelector((state) =>
-    state ? state.products : null
-  );
+  // const { status, items } = useSelector((state) =>
+  //   state ? state.products : null
+  // );
+
+  const { cartItems } = useSelector((state) => (state ? state.cart : null));
+
   const dispatch = useDispatch();
 
-  const isLoading = status !== 'success';
+  // const isLoading = status !== 'success';
 
   // console.log('items', items);
 
@@ -42,12 +45,13 @@ const CartPage = () => {
           <Text>Корзина</Text>
 
           <List>
-            {isLoading ? (
+            {/* {isLoading ? (
               <Center>
                 <Spinner />
               </Center>
-            ) : (
-              items.map((item) => (
+            ) : ( */}
+            {
+              cartItems.map((item) => (
                 <ListItem key={item.id}>
                   <Flex alignItems='center' gap='2'>
                     <Box w='100px'>
@@ -91,7 +95,8 @@ const CartPage = () => {
                   </Flex>
                 </ListItem>
               ))
-            )}
+              // )
+            }
           </List>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1} bg='tomato'>
