@@ -5,6 +5,7 @@ import {
   decreaseCart,
   getTotals,
 } from '../slices/cartSlise';
+import { useEffect } from 'react';
 
 import {
   Box,
@@ -23,8 +24,10 @@ import {
   Stack,
   Spacer,
   HStack,
+  Center,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { GoTrash } from 'react-icons/go';
+import { CiShoppingCart } from 'react-icons/ci';
 
 const CartPage = () => {
   // const { items } = useSelector((state) => (state ? state.products : null));
@@ -58,11 +61,16 @@ const CartPage = () => {
       <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}>
         <GridItem as='section' colSpan={3}>
           <Box maxW='800px' mx='auto' px='1rem' h='100vh' overflow='scroll'>
-            <Text as='h1'>Cart</Text>
+            <HStack p={3} fontSize='4xl'>
+              <Text as='h1' fontSize='3xl'>
+                Your Cart
+              </Text>
+              <CiShoppingCart />
+            </HStack>
             <List>
               {cart.cartItems.length === 0 ? (
                 <Box>
-                  <AbsoluteCenter>Cart is empty</AbsoluteCenter>
+                  <AbsoluteCenter fontSize='3xl'>Cart is empty</AbsoluteCenter>
                 </Box>
               ) : (
                 cart.cartItems.map((item) => (
@@ -81,44 +89,41 @@ const CartPage = () => {
                       />
                       <Stack>
                         <CardBody>
-                          <Grid
-                            templateColumns='repeat(4, 1fr)'
-                            columnGap={10}
-                            rowGap={4}
-                          >
+                          <Grid templateColumns='repeat(4, 1fr)' gap={4}>
                             <GridItem colSpan={3}>
                               <Heading size='md'>{item.title}</Heading>
                               <Text py='2'>{item.description}</Text>
                             </GridItem>
                             <GridItem colSpan={1}>
                               <HStack>
-                                <Text>{item.cartQuantity}</Text>
-                                <Spacer />
-                                <Text>
-                                  {roundNumber(item.price * item.cartQuantity)}
+                                <Text mr='1rem' fontSize='lg'>
+                                  {roundNumber(item.price)}
                                 </Text>
+                                <Button
+                                  onClick={() => handleAddToCart(item)}
+                                  variant='solid'
+                                  colorScheme='blue'
+                                  size='xs'
+                                >
+                                  +
+                                </Button>
+                                <Text>{item.cartQuantity}</Text>
+                                <Button
+                                  onClick={() => handleDecreaseCart(item)}
+                                  variant='solid'
+                                  size='xs'
+                                >
+                                  -
+                                </Button>
+                                <Spacer />
                               </HStack>
                             </GridItem>
                           </Grid>
                         </CardBody>
                         <CardFooter>
-                          <Button
-                            onClick={() => handleAddToCart(item)}
-                            variant='solid'
-                            colorScheme='blue'
-                          >
-                            +
-                          </Button>
-                          <Button
-                            onClick={() => handleDecreaseCart(item)}
-                            ml={2}
-                            variant='solid'
-                          >
-                            -
-                          </Button>
                           <Spacer />
                           <Button onClick={() => handleRemoveFromCart(item)}>
-                            Remove
+                            <GoTrash />
                           </Button>
                         </CardFooter>
                       </Stack>
@@ -129,8 +134,18 @@ const CartPage = () => {
             </List>
           </Box>
         </GridItem>
-        <GridItem as='section' rowSpan={1} colSpan={1} bg='#fafafa'>
-          <Box p='3rem'>Total: {roundNumber(cart.cartTotalAmount)} RUB</Box>
+        <GridItem
+          as='section'
+          rowSpan={1}
+          colSpan={1}
+          // bg='#fafafa'
+          borderLeft
+          borderLeftWidth='1px'
+          borderLeftColor='gray.200'
+        >
+          <Box p='3rem' fontSize='xl'>
+            Total: {roundNumber(cart.cartTotalAmount)}RUB
+          </Box>
         </GridItem>
       </Grid>
     </Box>
