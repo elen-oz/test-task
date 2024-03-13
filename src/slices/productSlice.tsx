@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 type State = {
@@ -40,5 +44,17 @@ const productsSlice = createSlice({
       });
   },
 });
+
+const selectProductsState = (state) => state.products;
+
+export const selectStatus = createSelector(
+  selectProductsState,
+  (state) => state.status
+);
+
+export const selectItems = createSelector(
+  selectProductsState,
+  (state) => state.items
+);
 
 export default productsSlice.reducer;
