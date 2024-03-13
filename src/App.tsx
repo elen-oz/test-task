@@ -1,14 +1,17 @@
-import {} from 'antd';
-import AppFooter from './components/Footer';
-import PageContent from './components/PageContent';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import './app.css';
+import CartPage from './pages/CartPage';
+import ErrorPage from './pages/ErrorPage';
 
 const App = () => {
   return (
     <div className='app'>
-      <PageContent />
-      <AppFooter />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<CartPage />} />
+          <Route path='*' element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
