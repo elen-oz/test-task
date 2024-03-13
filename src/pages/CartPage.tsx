@@ -1,9 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  productsFetch,
-  selectStatus,
-  selectItems,
-} from '../slices/productSlice';
+import { useSelector } from 'react-redux';
 
 import {
   Accordion,
@@ -19,20 +14,20 @@ import {
   List,
   ListItem,
   Text,
+  Spinner,
+  Center,
 } from '@chakra-ui/react';
 
 const CartPage = () => {
-  // const dispatch = useDispatch();
-  const status = useSelector(selectStatus);
-  const products = useSelector(selectItems);
+  const { status, items } = useSelector((state) =>
+    state ? state.products : null
+  );
 
-  const isLoaded = status !== 'succes';
+  const isLoading = status !== 'success';
 
-  // useEffect(() => {
-  //   dispatch(productsFetch());
-  // }, [dispatch]);
-
-  console.log('products', products);
+  // console.log('isLoaded', isLoaded);
+  console.log('items', items);
+  // console.log('status', status);
 
   return (
     <Box h='100vh' p={2}>
@@ -41,13 +36,17 @@ const CartPage = () => {
           <Text>Корзина</Text>
 
           <List>
-            {isLoaded &&
-              products.map((product) => (
-                <ListItem key={product.id}>
+            {isLoading ? (
+              <Center>
+                <Spinner />
+              </Center>
+            ) : (
+              items.map((item) => (
+                <ListItem key={item.id}>
                   <Flex alignItems='center' gap='2'>
                     <Box w='100px'>
                       <Image
-                        src={product.image}
+                        src={item.image}
                         boxSize='100%'
                         objectFit='cover'
                         alt='Product Image'
@@ -59,24 +58,25 @@ const CartPage = () => {
                         <h2>
                           <AccordionButton>
                             <Box as='span' flex='1' textAlign='left'>
-                              {product.title}
+                              {item.title}
                             </Box>
                             <AccordionIcon />
                           </AccordionButton>
                         </h2>
                         <AccordionPanel pb={4}>
-                          {product.description}
+                          {item.description}
                         </AccordionPanel>
                       </AccordionItem>
                     </Accordion>
 
                     <Text>quantity</Text>
                     <Text w='50px' textAlign='right'>
-                      {product.price}
+                      {item.price}
                     </Text>
                   </Flex>
                 </ListItem>
-              ))}
+              ))
+            )}
           </List>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1} bg='tomato'>
