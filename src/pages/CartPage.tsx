@@ -1,5 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart, decreaseCart } from '../slices/cartSlise';
+import {
+  addToCart,
+  removeFromCart,
+  decreaseCart,
+  getTotals,
+} from '../slices/cartSlise';
 
 import {
   Box,
@@ -19,17 +24,22 @@ import {
   Spacer,
   HStack,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
 const CartPage = () => {
-  const { items } = useSelector((state) => (state ? state.products : null));
-
-  // const { cartItems } = useSelector((state) => (state ? state.cart : null));
-
+  // const { items } = useSelector((state) => (state ? state.products : null));
+  const cart = useSelector((state) => (state ? state.cart : null));
   const dispatch = useDispatch();
 
-  // const isLoading = status !== 'success';
+  useEffect(() => {
+    dispatch(getTotals());
+  }, [cart, dispatch]);
 
-  console.log('items', items);
+  console.log('cart.cartTotalQuantity', cart.cartTotalQuantity);
+
+  const roundNumber = (num) => {
+    return num.toFixed(1);
+  };
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
@@ -50,12 +60,12 @@ const CartPage = () => {
           <Box maxW='800px' mx='auto' px='1rem' h='100vh' overflow='scroll'>
             <Text as='h1'>Cart</Text>
             <List>
-              {items.length === 0 ? (
+              {cart.cartItems.length === 0 ? (
                 <Box>
                   <AbsoluteCenter>Cart is empty</AbsoluteCenter>
                 </Box>
               ) : (
-                items.map((item) => (
+                cart.cartItems.map((item) => (
                   <ListItem key={item.id} mb='1rem'>
                     <Card
                       key={item.id}
@@ -82,9 +92,11 @@ const CartPage = () => {
                             </GridItem>
                             <GridItem colSpan={1}>
                               <HStack>
-                                <Text>x 1</Text>
+                                <Text>{item.cartQuantity}</Text>
                                 <Spacer />
-                                <Text>price</Text>
+                                <Text>
+                                  {roundNumber(item.price * item.cartQuantity)}
+                                </Text>
                               </HStack>
                             </GridItem>
                           </Grid>
@@ -117,8 +129,8 @@ const CartPage = () => {
             </List>
           </Box>
         </GridItem>
-        <GridItem as='section' rowSpan={1} colSpan={1} bg='papayawhip'>
-          <Box p='3rem'>Total: 000 RUB</Box>
+        <GridItem as='section' rowSpan={1} colSpan={1} bg='#fafafa'>
+          <Box p='3rem'>Total: {roundNumber(cart.cartTotalAmount)} RUB</Box>
         </GridItem>
       </Grid>
     </Box>
