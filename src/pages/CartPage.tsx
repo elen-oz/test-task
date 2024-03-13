@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
 import {
   Accordion,
   AccordionButton,
@@ -16,18 +16,24 @@ import {
   Text,
   Spinner,
   Center,
+  HStack,
+  Button,
 } from '@chakra-ui/react';
+import { addToCart } from '../slices/cartSlise';
 
 const CartPage = () => {
   const { status, items } = useSelector((state) =>
     state ? state.products : null
   );
+  const dispatch = useDispatch();
 
   const isLoading = status !== 'success';
 
-  // console.log('isLoaded', isLoaded);
-  console.log('items', items);
-  // console.log('status', status);
+  // console.log('items', items);
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
 
   return (
     <Box h='100vh' p={2}>
@@ -53,7 +59,7 @@ const CartPage = () => {
                       />
                     </Box>
 
-                    <Accordion allowToggle w='400px'>
+                    <Accordion allowToggle w='370px'>
                       <AccordionItem>
                         <h2>
                           <AccordionButton>
@@ -69,10 +75,19 @@ const CartPage = () => {
                       </AccordionItem>
                     </Accordion>
 
-                    <Text>quantity</Text>
-                    <Text w='50px' textAlign='right'>
-                      {item.price}
-                    </Text>
+                    <HStack>
+                      <Text>quantity</Text>
+                      <Text w='50px' textAlign='right'>
+                        {item.price}
+                      </Text>
+                    </HStack>
+                    <Box w='95px'>
+                      <Flex>
+                        <Button onClick={() => handleAddToCart(item)}>+</Button>
+                        <Button>-</Button>
+                      </Flex>
+                      <Button>Remove</Button>
+                    </Box>
                   </Flex>
                 </ListItem>
               ))

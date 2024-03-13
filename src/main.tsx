@@ -6,11 +6,13 @@ import './index.css';
 
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import productReducer, { productsFetch } from './slices/productSlice.tsx';
+import productReducer, { productsFetch } from './slices/productSlice.ts';
+import cartReducer from './slices/cartSlise.ts';
 
 const store = configureStore({
   reducer: {
     products: productReducer,
+    cart: cartReducer,
   },
 });
 

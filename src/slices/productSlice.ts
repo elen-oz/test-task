@@ -4,9 +4,10 @@ import {
   createSelector,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { type Product } from '../models';
 
 type State = {
-  items: [];
+  items: Product[];
   status: string | null;
 };
 
