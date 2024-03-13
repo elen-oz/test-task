@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../slices/cartSlise';
+import { addToCart, removeFromCart } from '../slices/cartSlise';
 
 import {
   Box,
@@ -21,18 +21,22 @@ import {
 } from '@chakra-ui/react';
 
 const CartPage = () => {
-  // const { items } = useSelector((state) => (state ? state.products : null));
+  const { items } = useSelector((state) => (state ? state.products : null));
 
-  const { cartItems } = useSelector((state) => (state ? state.cart : null));
+  // const { cartItems } = useSelector((state) => (state ? state.cart : null));
 
   const dispatch = useDispatch();
 
   // const isLoading = status !== 'success';
 
-  console.log('cartItems', cartItems);
+  console.log('items', items);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
+  };
+
+  const handleRemoveFromCart = (product) => {
+    dispatch(removeFromCart(product));
   };
 
   return (
@@ -42,12 +46,12 @@ const CartPage = () => {
           <Box maxW='800px' mx='auto' px='1rem' h='100vh' overflow='scroll'>
             <Text as='h1'>Cart</Text>
             <List>
-              {cartItems.length === 0 ? (
+              {items.length === 0 ? (
                 <Box>
                   <AbsoluteCenter>Cart is empty</AbsoluteCenter>
                 </Box>
               ) : (
-                cartItems.map((item) => (
+                items.map((item) => (
                   <ListItem key={item.id} mb='1rem'>
                     <Card
                       key={item.id}
@@ -93,7 +97,9 @@ const CartPage = () => {
                             -
                           </Button>
                           <Spacer />
-                          <Button>Remove</Button>
+                          <Button onClick={() => handleRemoveFromCart(item)}>
+                            Remove
+                          </Button>
                         </CardFooter>
                       </Stack>
                     </Card>
