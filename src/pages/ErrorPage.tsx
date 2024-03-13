@@ -1,4 +1,4 @@
-import { Center, Text, Box, VStack, AbsoluteCenter } from '@chakra-ui/react';
+import { Center, Box, VStack, AbsoluteCenter } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const ErrorPage = () => {
