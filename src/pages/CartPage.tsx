@@ -16,7 +16,6 @@ const CartPage = () => {
   const cart: CartState = useSelector(selectCartState);
   const { cartItems, cartTotalAmount, status } = cart;
   const isLoading = status === 'pending';
-  console.log('status', status);
 
   const dispatch = useDispatch();
 
