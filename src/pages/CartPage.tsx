@@ -24,22 +24,18 @@ import {
   Stack,
   Spacer,
   HStack,
-  Center,
-  Flex,
-  OrderedList,
   useBreakpointValue,
 } from '@chakra-ui/react';
 
 import { RepeatIcon, AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
 
-// import data from '../data.json';
 import { type CartState } from '../models';
 
 const CartPage = () => {
   const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm' });
-  const { items, status } = useSelector((state) =>
-    state ? state.products : null
-  );
+  // const { items, status } = useSelector((state) =>
+  //   state ? state.products : null
+  // );
 
   const cart: CartState = useSelector((state) => (state ? state.cart : null));
   const dispatch = useDispatch();
@@ -68,7 +64,6 @@ const CartPage = () => {
 
   return (
     <Box h='100vh'>
-      {/* <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}> */}
       <Grid
         h='100%'
         templateColumns={['1fr', '1fr', '1fr', 'repeat(4, 1fr)']}
@@ -98,13 +93,13 @@ const CartPage = () => {
                 </Button>
               )}
             </HStack>
-            {items.length === 0 ? (
+            {cart.cartItems.length === 0 ? (
               <Box>
                 <AbsoluteCenter fontSize='3xl'>Cart is empty</AbsoluteCenter>
               </Box>
             ) : (
               <>
-                {items.length === 0 ? (
+                {cart.cartItems.length === 0 ? (
                   <Box>
                     <AbsoluteCenter fontSize='3xl'>
                       Корзина пуста
@@ -112,7 +107,7 @@ const CartPage = () => {
                   </Box>
                 ) : (
                   <List px={{ md: '1rem', lg: '1rem' }}>
-                    {items.map((item, index) => (
+                    {cart.cartItems.map((item, index) => (
                       <ListItem key={item.id}>
                         <Card
                           direction={{ base: 'column', md: 'row' }}

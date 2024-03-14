@@ -1,5 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { type CartState } from '../models';
+import { selectItems } from './productSlice';
+
+// const initialState: CartState = {
+//   cartItems: localStorage.getItem('cartItems')
+//     ? JSON.parse(localStorage.getItem('cartItems'))
+//     : selectItems(state) || [],
+//   cartTotalQuantity: 0,
+//   cartTotalAmount: 0,
+// };
 
 const initialState: CartState = {
   cartItems: localStorage.getItem('cartItems')
