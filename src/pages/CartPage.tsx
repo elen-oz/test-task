@@ -76,7 +76,7 @@ const CartPage = () => {
           <Box mx='auto' px='1rem' h='100vh' overflow='scroll'>
             <HStack p={3} fontSize='4xl'>
               <Text as='h1' fontSize='3xl'>
-                Your Cart
+                Ваша корзина
               </Text>
             </HStack>
             {items.length === 0 ? (
@@ -88,7 +88,7 @@ const CartPage = () => {
                 {items.length === 0 ? (
                   <Box>
                     <AbsoluteCenter fontSize='3xl'>
-                      Cart is empty
+                      Корзина пуста
                     </AbsoluteCenter>
                   </Box>
                 ) : (
@@ -187,7 +187,7 @@ const CartPage = () => {
           borderLeftColor='gray.200'
         >
           <Box p='3rem' fontSize='xl'>
-            Total: {roundNumber(cart.cartTotalAmount)}RUB
+            Всего: {roundNumber(cart.cartTotalAmount)}руб.
           </Box>
         </GridItem>
       </Grid>
