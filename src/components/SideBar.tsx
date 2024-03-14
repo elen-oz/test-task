@@ -3,12 +3,14 @@ import { formatNumber } from '../utils';
 
 type Props = {
   totalAmount: number;
+  isLoading: boolean;
 };
 
-const SideBar = ({ totalAmount }: Props) => {
+const SideBar = ({ totalAmount, isLoading }: Props) => {
   return (
     <Box p='3rem' fontSize='xl'>
-      Всего: {formatNumber(totalAmount)}руб.
+      {isLoading && `Загрузка корзины...`}
+      {!isLoading && `Всего: ${formatNumber(totalAmount)}руб.`}
     </Box>
   );
 };

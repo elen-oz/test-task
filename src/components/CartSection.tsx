@@ -15,9 +15,9 @@ import {
   Stack,
   Spacer,
   HStack,
-  useBreakpointValue,
+  Spinner,
 } from '@chakra-ui/react';
-import { RepeatIcon, AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
+import { AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
 import { type Product } from '../models';
 import { formatNumber } from '../utils';
 
@@ -26,14 +26,12 @@ type Props = {
   addToCart: (product: Product) => void;
   decreaseCart: (product: Product) => void;
   removeFromCart: (product: Product) => void;
-  restoreCart: () => void;
+  isLoading: boolean;
 };
 
 const CartSection = (props: Props) => {
-  const { products, addToCart, decreaseCart, removeFromCart, restoreCart } =
+  const { products, addToCart, decreaseCart, removeFromCart, isLoading } =
     props;
-
-  const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm' });
 
   return (
     <Box mx='auto' h='100vh' overflow='scroll'>
@@ -42,21 +40,15 @@ const CartSection = (props: Props) => {
           Ваша корзина
         </Text>
         <Spacer />
-        {/* {breakpoint === 'base' ? (
-          <Button colorScheme='blue'>
-            <RepeatIcon />
-          </Button>
-        ) : (
-          <Button
-            onClick={restoreCart}
-            colorScheme='blue'
-            leftIcon={<RepeatIcon />}
-          >
-            Восстановить корзину
-          </Button>
-        )} */}
       </HStack>
-      {products.length === 0 ? (
+      {isLoading && (
+        <Box>
+          <AbsoluteCenter fontSize='3xl'>
+            <Spinner />
+          </AbsoluteCenter>
+        </Box>
+      )}
+      {!isLoading && products.length === 0 ? (
         <Box>
           <AbsoluteCenter fontSize='3xl'>Корзина пуста</AbsoluteCenter>
         </Box>
@@ -72,7 +64,6 @@ const CartSection = (props: Props) => {
                 <Text px={3} pt={2} fontSize='lg'>
                   {index + 1}
                 </Text>
-
                 <Image
                   objectFit='contain'
                   px={[4, 0]}
@@ -100,7 +91,6 @@ const CartSection = (props: Props) => {
                       <GridItem colSpan={[5, 5, 5, 5, 1]}>
                         <HStack spacing={2}>
                           <Text fontSize='lg'>{formatNumber(item.price)}</Text>
-
                           <Button
                             onClick={() => addToCart(item)}
                             variant='solid'
@@ -123,7 +113,6 @@ const CartSection = (props: Props) => {
                   </CardBody>
                   <CardFooter>
                     <Spacer />
-
                     <Button onClick={() => removeFromCart(item)}>
                       <DeleteIcon />
                     </Button>
