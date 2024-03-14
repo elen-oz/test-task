@@ -5,7 +5,7 @@ import {
   decreaseCart,
   getTotals,
 } from '../store/cartSlice';
-import { selectProductsState } from '../store/productSlice';
+
 import { selectCartState } from '../store/cartSlice';
 import { useEffect } from 'react';
 import { type CartState, type Product, type ProductsState } from '../models';
@@ -16,17 +16,23 @@ import SideBar from '../components/SideBar';
 import CartSection from '../components/CartSection';
 
 const CartPage = () => {
-  const productsState = useSelector(selectProductsState);
-  const { items } = productsState;
-
   const cart: CartState = useSelector(selectCartState);
-  const { cartItems, cartTotalQuantity, cartTotalAmount } = cart;
+  const { cartItems, cartTotalQuantity, cartTotalAmount, status } = cart;
+
+  console.log('cartItems', cartItems);
+  console.log('status', status);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTotals());
   }, [cart, dispatch]);
+
+  if (status === 'success') {
+    dispatch(getTotals());
+  }
+
+  const handleRestoreCart = () => {};
 
   const handleAddToCart = (product: Product) => {
     dispatch(addToCart(product));
@@ -49,10 +55,11 @@ const CartPage = () => {
       >
         <GridItem as='section' colSpan={3}>
           <CartSection
-            products={items}
+            products={cartItems}
             addToCart={handleAddToCart}
             decreaseCart={handleDecreaseCart}
             removeFromCart={handleRemoveFromCart}
+            restoreCart={handleRestoreCart}
           />
         </GridItem>
         <GridItem
@@ -66,7 +73,7 @@ const CartPage = () => {
           borderTopWidth='1px'
           borderTopColor='gray.200'
         >
-          <SideBar totalAmount={cart.cartTotalAmount} />
+          <SideBar totalAmount={cartTotalAmount} />
         </GridItem>
       </Grid>
     </Box>

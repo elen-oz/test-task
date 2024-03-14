@@ -1,17 +1,14 @@
 import { Box } from '@chakra-ui/react';
+import { formatNumber } from '../utils';
 
 type Props = {
   totalAmount: number;
 };
 
 const SideBar = ({ totalAmount }: Props) => {
-  const roundNumber = (num) => {
-    return num.toFixed(2);
-  };
-
   return (
     <Box p='3rem' fontSize='xl'>
-      Всего: {roundNumber(totalAmount)}руб.
+      Всего: {formatNumber(totalAmount)}руб.
     </Box>
   );
 };

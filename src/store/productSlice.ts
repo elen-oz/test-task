@@ -45,14 +45,14 @@ const productsSlice = createSlice({
 
 export const selectProductsState = (state) => state.products;
 
-export const selectStatus = createSelector(
-  selectProductsState,
-  (state) => state.status
-);
+// export const selectStatus = createSelector(
+//   selectProductsState,
+//   (state) => state.status
+// );
 
-export const selectItems = createSelector(
-  selectProductsState,
-  (state) => state.items
-);
+// export const selectItems = createSelector(
+//   selectProductsState,
+//   (state) => state.items
+// );
 
 export default productsSlice.reducer;

@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { type CartState, type Product } from '../models';
 
 const storedCartItems = localStorage.getItem('cartItems');
@@ -12,7 +13,17 @@ const initialState: CartState = {
   cartItems: initialCartItems,
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
+  status: 'idle',
 };
+
+export const loadProducts = createAsyncThunk('cart/loadProducts', async () => {
+  try {
+    const response = await axios.get('/data.json');
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch products data');
+  }
+});
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -79,6 +90,22 @@ const cartSlice = createSlice({
       state.cartTotalQuantity = quantity;
       state.cartTotalAmount = total;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadProducts.pending, (state, action) => {
+        state.status = 'pending';
+      })
+      .addCase(loadProducts.fulfilled, (state, action) => {
+        state.status = 'success';
+        state.cartItems = action.payload.map((product) => ({
+          ...product,
+          cartQuantity: 1,
+        }));
+      })
+      .addCase(loadProducts.rejected, (state, action) => {
+        state.status = 'rejected';
+      });
   },
 });
 
