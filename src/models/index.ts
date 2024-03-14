@@ -16,4 +16,5 @@ export type CartState = {
   cartItems: Product[];
   cartTotalQuantity: number;
   cartTotalAmount: number;
+  status: string | null;
 };

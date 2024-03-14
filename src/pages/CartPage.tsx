@@ -1,196 +1,55 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, Grid, GridItem } from '@chakra-ui/react';
 import {
   addToCart,
   removeFromCart,
   decreaseCart,
   getTotals,
-} from '../slices/cartSlise';
-import { useEffect } from 'react';
-
-import {
-  Box,
-  Grid,
-  GridItem,
-  Image,
-  List,
-  ListItem,
-  Text,
-  Button,
-  AbsoluteCenter,
-  Card,
-  CardBody,
-  CardFooter,
-  Heading,
-  Stack,
-  Spacer,
-  HStack,
-  Center,
-  Flex,
-  OrderedList,
-  useBreakpointValue,
-} from '@chakra-ui/react';
-
-import { RepeatIcon, AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
-
-// import data from '../data.json';
-import { type CartState } from '../models';
+  selectCartState,
+} from '../store/cartSlice';
+import { type CartState, type Product } from '../models';
+import SideBar from '../components/SideBar';
+import CartSection from '../components/CartSection';
 
 const CartPage = () => {
-  const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm' });
-  const { items, status } = useSelector((state) =>
-    state ? state.products : null
-  );
+  const cart: CartState = useSelector(selectCartState);
+  const { cartItems, cartTotalAmount, status } = cart;
+  const isLoading = status === 'pending';
 
-  const cart: CartState = useSelector((state) => (state ? state.cart : null));
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTotals());
   }, [cart, dispatch]);
 
-  console.log('cart', cart);
-
-  const roundNumber = (num) => {
-    return num.toFixed(1);
-  };
-
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product: Product) => {
     dispatch(addToCart(product));
   };
 
-  const handleRemoveFromCart = (product) => {
+  const handleRemoveFromCart = (product: Product) => {
     dispatch(removeFromCart(product));
   };
 
-  const handleDecreaseCart = (product) => {
+  const handleDecreaseCart = (product: Product) => {
     dispatch(decreaseCart(product));
   };
 
   return (
     <Box h='100vh'>
-      {/* <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}> */}
       <Grid
         h='100%'
         templateColumns={['1fr', '1fr', '1fr', 'repeat(4, 1fr)']}
         gap={[0, 0, 2]}
       >
         <GridItem as='section' colSpan={3}>
-          <Box mx='auto' h='100vh' overflow='scroll'>
-            <HStack p={3} fontSize='4xl'>
-              <Text as='h1' fontSize='3xl'>
-                Ваша корзина
-              </Text>
-              <Spacer />
-              {breakpoint === 'base' ? (
-                <Button
-                  colorScheme='blue'
-                  onClick={() => handleRemoveFromCart(item)}
-                >
-                  <RepeatIcon />
-                </Button>
-              ) : (
-                <Button
-                  colorScheme='blue'
-                  onClick={() => handleRemoveFromCart(item)}
-                  leftIcon={<RepeatIcon />}
-                >
-                  Восстановить корзину
-                </Button>
-              )}
-            </HStack>
-            {items.length === 0 ? (
-              <Box>
-                <AbsoluteCenter fontSize='3xl'>Cart is empty</AbsoluteCenter>
-              </Box>
-            ) : (
-              <>
-                {items.length === 0 ? (
-                  <Box>
-                    <AbsoluteCenter fontSize='3xl'>
-                      Корзина пуста
-                    </AbsoluteCenter>
-                  </Box>
-                ) : (
-                  <List px={{ md: '1rem', lg: '1rem' }}>
-                    {items.map((item, index) => (
-                      <ListItem key={item.id}>
-                        <Card
-                          direction={{ base: 'column', md: 'row' }}
-                          overflow='hidden'
-                          mb={4}
-                        >
-                          <Text px={3} pt={2} fontSize='lg'>
-                            {index + 1}
-                          </Text>
-
-                          <Image
-                            objectFit='contain'
-                            px={[4, 0]}
-                            mx='auto'
-                            maxW={{ base: '100%', sm: '300px', md: '200px' }}
-                            src={item.image}
-                            alt='Product image'
-                          />
-                          <Stack>
-                            <CardBody>
-                              <Grid
-                                templateColumns={[
-                                  '1fr',
-                                  '1fr',
-                                  '1fr',
-                                  '1fr',
-                                  'repeat(5, 1fr)',
-                                ]}
-                                gap={4}
-                              >
-                                <GridItem colSpan={[5, 5, 5, 5, 4]}>
-                                  <Heading size='md'>{item.title}</Heading>
-                                  <Text py='2'>{item.description}</Text>
-                                </GridItem>
-                                <GridItem colSpan={[5, 5, 5, 5, 1]}>
-                                  <HStack spacing={2}>
-                                    <Text fontSize='lg'>
-                                      {roundNumber(item.price)}
-                                    </Text>
-
-                                    <Button
-                                      onClick={() => handleAddToCart(item)}
-                                      variant='solid'
-                                      colorScheme='blue'
-                                      size='xs'
-                                    >
-                                      <AddIcon />
-                                    </Button>
-                                    <Text>{item.cartQuantity}</Text>
-                                    <Button
-                                      onClick={() => handleDecreaseCart(item)}
-                                      variant='solid'
-                                      size='xs'
-                                    >
-                                      <MinusIcon />
-                                    </Button>
-                                  </HStack>
-                                </GridItem>
-                              </Grid>
-                            </CardBody>
-                            <CardFooter>
-                              <Spacer />
-
-                              <Button
-                                onClick={() => handleRemoveFromCart(item)}
-                              >
-                                <DeleteIcon />
-                              </Button>
-                            </CardFooter>
-                          </Stack>
-                        </Card>
-                      </ListItem>
-                    ))}
-                  </List>
-                )}
-              </>
-            )}
-          </Box>
+          <CartSection
+            isLoading={isLoading}
+            products={cartItems}
+            addToCart={handleAddToCart}
+            decreaseCart={handleDecreaseCart}
+            removeFromCart={handleRemoveFromCart}
+          />
         </GridItem>
         <GridItem
           as='section'
@@ -203,9 +62,7 @@ const CartPage = () => {
           borderTopWidth='1px'
           borderTopColor='gray.200'
         >
-          <Box p='3rem' fontSize='xl'>
-            Всего: {roundNumber(cart.cartTotalAmount)}руб.
-          </Box>
+          <SideBar totalAmount={cartTotalAmount} isLoading={isLoading} />
         </GridItem>
       </Grid>
     </Box>
