@@ -36,7 +36,7 @@ const CartPage = () => {
   };
 
   return (
-    <Box h='100vh'>
+    <Box h='100vh' maxW='1441px' mx='auto'>
       <Grid
         h='100%'
         templateColumns={['1fr', '1fr', '1fr', 'repeat(4, 1fr)']}

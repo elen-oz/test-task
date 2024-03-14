@@ -10,7 +10,7 @@ const SideBar = ({ totalAmount, isLoading }: Props) => {
   return (
     <Box p='3rem' fontSize='xl'>
       {isLoading && `Загрузка корзины...`}
-      {!isLoading && `Всего: ${formatNumber(totalAmount)}руб.`}
+      {!isLoading && `Итого: ${formatNumber(totalAmount)}руб.`}
     </Box>
   );
 };
