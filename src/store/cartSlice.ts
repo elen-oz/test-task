@@ -1,19 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { type CartState } from '../models';
-import { selectItems } from './productSlice';
+import { type CartState, type Product } from '../models';
 
-// const initialState: CartState = {
-//   cartItems: localStorage.getItem('cartItems')
-//     ? JSON.parse(localStorage.getItem('cartItems'))
-//     : selectItems(state) || [],
-//   cartTotalQuantity: 0,
-//   cartTotalAmount: 0,
-// };
+const storedCartItems = localStorage.getItem('cartItems');
+let initialCartItems: Product[] = [];
+
+if (storedCartItems) {
+  initialCartItems = JSON.parse(storedCartItems);
+}
 
 const initialState: CartState = {
-  cartItems: localStorage.getItem('cartItems')
-    ? JSON.parse(localStorage.getItem('cartItems'))
-    : [],
+  cartItems: initialCartItems,
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
 };
@@ -27,7 +23,11 @@ const cartSlice = createSlice({
         (item) => item.id === action.payload.id
       );
       if (itemIndex >= 0) {
-        state.cartItems[itemIndex].cartQuantity += 1;
+        if (state.cartItems[itemIndex].cartQuantity < 10) {
+          state.cartItems[itemIndex].cartQuantity += 1;
+        } else {
+          return;
+        }
       } else {
         const tempProduct = { ...action.payload, cartQuantity: 1 };
         state.cartItems.push(tempProduct);
@@ -81,6 +81,8 @@ const cartSlice = createSlice({
     },
   },
 });
+
+export const selectCartState = (state) => state.cart;
 
 export const { addToCart, removeFromCart, decreaseCart, getTotals } =
   cartSlice.actions;

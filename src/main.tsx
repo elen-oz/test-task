@@ -3,27 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { ChakraProvider } from '@chakra-ui/react';
 import App from './App.tsx';
 
-import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import productReducer, { productsFetch } from './slices/productSlice.ts';
-import cartReducer, { getTotals } from './slices/cartSlise.ts';
-
-import { extendTheme } from '@chakra-ui/react';
-import '@fontsource-variable/nunito';
-
-const theme = extendTheme({
-  fonts: {
-    heading: `'Nunito Variable', sans-serif`,
-    body: `'Nunito Variable', sans-serif`,
-  },
-});
-
-const store = configureStore({
-  reducer: {
-    products: productReducer,
-    cart: cartReducer,
-  },
-});
+import store from './store/store.ts';
+import { productsFetch } from './store/productSlice.ts';
+import { getTotals } from './store/cartSlice.ts';
+import theme from './theme.tsx';
 
 store.dispatch(productsFetch());
 store.dispatch(getTotals());

@@ -17,8 +17,6 @@ export const productsFetch = createAsyncThunk(
     try {
       const response = await axios.get('/data.json');
 
-      // console.log('response.data', response.data);
-
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch products data');
@@ -45,7 +43,7 @@ const productsSlice = createSlice({
   },
 });
 
-const selectProductsState = (state) => state.products;
+export const selectProductsState = (state) => state.products;
 
 export const selectStatus = createSelector(
   selectProductsState,
