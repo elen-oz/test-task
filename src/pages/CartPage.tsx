@@ -65,8 +65,13 @@ const CartPage = () => {
   };
 
   return (
-    <Box h='100vh' p={2}>
-      <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}>
+    <Box h='100vh'>
+      {/* <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}> */}
+      <Grid
+        h='100%'
+        templateColumns={['1fr', '1fr', '1fr', 'repeat(4, 1fr)']} // При экранах меньше 'md', элементы будут вставать в колонку
+        gap={2}
+      >
         <GridItem as='section' colSpan={3}>
           <Box mx='auto' px='1rem' h='100vh' overflow='scroll'>
             <HStack p={3} fontSize='4xl'>
@@ -87,7 +92,7 @@ const CartPage = () => {
                     </AbsoluteCenter>
                   </Box>
                 ) : (
-                  <List px={{ base: '0.2rem', md: '3rem', lg: '6rem' }}>
+                  <List px={{ md: '1rem', lg: '1rem' }}>
                     {items.map((item, index) => (
                       <ListItem key={item.id}>
                         <Card
@@ -107,12 +112,21 @@ const CartPage = () => {
                           />
                           <Stack>
                             <CardBody>
-                              <Grid templateColumns='repeat(5, 1fr)' gap={4}>
-                                <GridItem colSpan={4}>
+                              <Grid
+                                templateColumns={[
+                                  '1fr',
+                                  '1fr',
+                                  '1fr',
+                                  '1fr',
+                                  'repeat(5, 1fr)',
+                                ]}
+                                gap={4}
+                              >
+                                <GridItem colSpan={[5, 5, 5, 5, 4]}>
                                   <Heading size='md'>{item.title}</Heading>
                                   <Text py='2'>{item.description}</Text>
                                 </GridItem>
-                                <GridItem colSpan={1}>
+                                <GridItem colSpan={[5, 5, 5, 5, 1]}>
                                   <HStack spacing={2}>
                                     <Text fontSize='lg'>
                                       {roundNumber(item.price)}
