@@ -27,6 +27,7 @@ import {
   Center,
   Flex,
   OrderedList,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 
 import { RepeatIcon, AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
@@ -35,6 +36,7 @@ import { RepeatIcon, AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
 import { type CartState } from '../models';
 
 const CartPage = () => {
+  const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm' });
   const { items, status } = useSelector((state) =>
     state ? state.products : null
   );
@@ -69,15 +71,32 @@ const CartPage = () => {
       {/* <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}> */}
       <Grid
         h='100%'
-        templateColumns={['1fr', '1fr', '1fr', 'repeat(4, 1fr)']} // При экранах меньше 'md', элементы будут вставать в колонку
-        gap={2}
+        templateColumns={['1fr', '1fr', '1fr', 'repeat(4, 1fr)']}
+        gap={[0, 0, 2]}
       >
         <GridItem as='section' colSpan={3}>
-          <Box mx='auto' px='1rem' h='100vh' overflow='scroll'>
+          <Box mx='auto' h='100vh' overflow='scroll'>
             <HStack p={3} fontSize='4xl'>
               <Text as='h1' fontSize='3xl'>
                 Ваша корзина
               </Text>
+              <Spacer />
+              {breakpoint === 'base' ? (
+                <Button
+                  colorScheme='blue'
+                  onClick={() => handleRemoveFromCart(item)}
+                >
+                  <RepeatIcon />
+                </Button>
+              ) : (
+                <Button
+                  colorScheme='blue'
+                  onClick={() => handleRemoveFromCart(item)}
+                  leftIcon={<RepeatIcon />}
+                >
+                  Восстановить корзину
+                </Button>
+              )}
             </HStack>
             {items.length === 0 ? (
               <Box>
@@ -96,17 +115,19 @@ const CartPage = () => {
                     {items.map((item, index) => (
                       <ListItem key={item.id}>
                         <Card
-                          direction={{ base: 'column', sm: 'row' }}
+                          direction={{ base: 'column', md: 'row' }}
                           overflow='hidden'
                           mb={4}
                         >
                           <Text px={3} pt={2} fontSize='lg'>
                             {index + 1}
-                          </Text>{' '}
-                          {/* Нумерация элементов */}
+                          </Text>
+
                           <Image
                             objectFit='contain'
-                            maxW={{ base: '100%', sm: '200px' }}
+                            px={[4, 0]}
+                            mx='auto'
+                            maxW={{ base: '100%', sm: '300px', md: '200px' }}
                             src={item.image}
                             alt='Product image'
                           />
@@ -154,13 +175,7 @@ const CartPage = () => {
                             </CardBody>
                             <CardFooter>
                               <Spacer />
-                              <Button
-                                colorScheme='blue'
-                                onClick={() => handleRemoveFromCart(item)}
-                                leftIcon={<RepeatIcon />}
-                              >
-                                Восстановить корзину
-                              </Button>
+
                               <Button
                                 onClick={() => handleRemoveFromCart(item)}
                               >
@@ -179,12 +194,14 @@ const CartPage = () => {
         </GridItem>
         <GridItem
           as='section'
+          w='100%'
           rowSpan={1}
           colSpan={1}
-          // bg='#fafafa'
-          borderLeft
+          bg='#fafafa'
           borderLeftWidth='1px'
           borderLeftColor='gray.200'
+          borderTopWidth='1px'
+          borderTopColor='gray.200'
         >
           <Box p='3rem' fontSize='xl'>
             Всего: {roundNumber(cart.cartTotalAmount)}руб.
