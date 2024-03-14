@@ -6,3 +6,14 @@ export type Product = {
   image: string;
   cartQuantity: number;
 };
+
+export type ProductsState = {
+  items: Product[];
+  status: string | null;
+};
+
+export type CartState = {
+  cartItems: Product[];
+  cartTotalQuantity: number;
+  cartTotalAmount: number;
+};
