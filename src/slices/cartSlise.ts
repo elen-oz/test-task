@@ -1,12 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { type Product } from '../models';
+import { type CartState } from '../models';
 
-type State = {
-  cartItems: Product[];
-  cartTotalQuantity: number;
-  cartTotalAmount: number;
-};
-const initialState: State = {
+const initialState: CartState = {
   cartItems: localStorage.getItem('cartItems')
     ? JSON.parse(localStorage.getItem('cartItems'))
     : [],

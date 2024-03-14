@@ -25,20 +25,28 @@ import {
   Spacer,
   HStack,
   Center,
+  Flex,
+  OrderedList,
 } from '@chakra-ui/react';
-import { GoTrash } from 'react-icons/go';
-import { CiShoppingCart } from 'react-icons/ci';
+
+import { RepeatIcon, AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
+
+// import data from '../data.json';
+import { type CartState } from '../models';
 
 const CartPage = () => {
-  // const { items } = useSelector((state) => (state ? state.products : null));
-  const cart = useSelector((state) => (state ? state.cart : null));
+  const { items, status } = useSelector((state) =>
+    state ? state.products : null
+  );
+
+  const cart: CartState = useSelector((state) => (state ? state.cart : null));
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTotals());
   }, [cart, dispatch]);
 
-  console.log('cart.cartTotalQuantity', cart.cartTotalQuantity);
+  console.log('cart', cart);
 
   const roundNumber = (num) => {
     return num.toFixed(1);
@@ -60,78 +68,99 @@ const CartPage = () => {
     <Box h='100vh' p={2}>
       <Grid h='100%' templateColumns='repeat(4, 1fr)' gap={2}>
         <GridItem as='section' colSpan={3}>
-          <Box maxW='800px' mx='auto' px='1rem' h='100vh' overflow='scroll'>
+          <Box mx='auto' px='1rem' h='100vh' overflow='scroll'>
             <HStack p={3} fontSize='4xl'>
               <Text as='h1' fontSize='3xl'>
                 Your Cart
               </Text>
-              <CiShoppingCart />
             </HStack>
-            <List>
-              {cart.cartItems.length === 0 ? (
-                <Box>
-                  <AbsoluteCenter fontSize='3xl'>Cart is empty</AbsoluteCenter>
-                </Box>
-              ) : (
-                cart.cartItems.map((item) => (
-                  <ListItem key={item.id} mb='1rem'>
-                    <Card
-                      key={item.id}
-                      direction={{ base: 'column', sm: 'row' }}
-                      overflow='hidden'
-                      variant='outline'
-                    >
-                      <Image
-                        objectFit='cover'
-                        maxW={{ base: '100%', sm: '200px' }}
-                        src={item.image}
-                        alt='Product image'
-                      />
-                      <Stack>
-                        <CardBody>
-                          <Grid templateColumns='repeat(4, 1fr)' gap={4}>
-                            <GridItem colSpan={3}>
-                              <Heading size='md'>{item.title}</Heading>
-                              <Text py='2'>{item.description}</Text>
-                            </GridItem>
-                            <GridItem colSpan={1}>
-                              <HStack>
-                                <Text mr='1rem' fontSize='lg'>
-                                  {roundNumber(item.price)}
-                                </Text>
-                                <Button
-                                  onClick={() => handleAddToCart(item)}
-                                  variant='solid'
-                                  colorScheme='blue'
-                                  size='xs'
-                                >
-                                  +
-                                </Button>
-                                <Text>{item.cartQuantity}</Text>
-                                <Button
-                                  onClick={() => handleDecreaseCart(item)}
-                                  variant='solid'
-                                  size='xs'
-                                >
-                                  -
-                                </Button>
-                                <Spacer />
-                              </HStack>
-                            </GridItem>
-                          </Grid>
-                        </CardBody>
-                        <CardFooter>
-                          <Spacer />
-                          <Button onClick={() => handleRemoveFromCart(item)}>
-                            <GoTrash />
-                          </Button>
-                        </CardFooter>
-                      </Stack>
-                    </Card>
-                  </ListItem>
-                ))
-              )}
-            </List>
+            {items.length === 0 ? (
+              <Box>
+                <AbsoluteCenter fontSize='3xl'>Cart is empty</AbsoluteCenter>
+              </Box>
+            ) : (
+              <>
+                {items.length === 0 ? (
+                  <Box>
+                    <AbsoluteCenter fontSize='3xl'>
+                      Cart is empty
+                    </AbsoluteCenter>
+                  </Box>
+                ) : (
+                  <List px={{ base: '0.2rem', md: '3rem', lg: '6rem' }}>
+                    {items.map((item, index) => (
+                      <ListItem key={item.id}>
+                        <Card
+                          direction={{ base: 'column', sm: 'row' }}
+                          overflow='hidden'
+                          mb={4}
+                        >
+                          <Text px={3} pt={2} fontSize='lg'>
+                            {index + 1}
+                          </Text>{' '}
+                          {/* Нумерация элементов */}
+                          <Image
+                            objectFit='cover'
+                            maxW={{ base: '100%', sm: '200px' }}
+                            src={item.image}
+                            alt='Product image'
+                          />
+                          <Stack>
+                            <CardBody>
+                              <Grid templateColumns='repeat(5, 1fr)' gap={4}>
+                                <GridItem colSpan={4}>
+                                  <Heading size='md'>{item.title}</Heading>
+                                  <Text py='2'>{item.description}</Text>
+                                </GridItem>
+                                <GridItem colSpan={1}>
+                                  <HStack spacing={2}>
+                                    <Text fontSize='lg'>
+                                      {roundNumber(item.price)}
+                                    </Text>
+
+                                    <Button
+                                      onClick={() => handleAddToCart(item)}
+                                      variant='solid'
+                                      colorScheme='blue'
+                                      size='xs'
+                                    >
+                                      <AddIcon />
+                                    </Button>
+                                    <Text>{item.cartQuantity}</Text>
+                                    <Button
+                                      onClick={() => handleDecreaseCart(item)}
+                                      variant='solid'
+                                      size='xs'
+                                    >
+                                      <MinusIcon />
+                                    </Button>
+                                  </HStack>
+                                </GridItem>
+                              </Grid>
+                            </CardBody>
+                            <CardFooter>
+                              <Spacer />
+                              <Button
+                                colorScheme='blue'
+                                onClick={() => handleRemoveFromCart(item)}
+                                leftIcon={<RepeatIcon />}
+                              >
+                                Восстановить корзину
+                              </Button>
+                              <Button
+                                onClick={() => handleRemoveFromCart(item)}
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </CardFooter>
+                          </Stack>
+                        </Card>
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
+              </>
+            )}
           </Box>
         </GridItem>
         <GridItem

@@ -4,14 +4,9 @@ import {
   createSelector,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { type Product } from '../models';
+import { type ProductsState } from '../models';
 
-type State = {
-  items: Product[];
-  status: string | null;
-};
-
-const initialState: State = {
+const initialState: ProductsState = {
   items: [],
   status: null,
 };
@@ -19,11 +14,15 @@ const initialState: State = {
 export const productsFetch = createAsyncThunk(
   'products/productsFetch',
   async () => {
-    const response = await axios.get('https://fakestoreapi.com/products');
+    try {
+      const response = await axios.get('/data.json');
 
-    // console.log('response', response?.data);
+      // console.log('response.data', response.data);
 
-    return response?.data;
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch products data');
+    }
   }
 );
 
