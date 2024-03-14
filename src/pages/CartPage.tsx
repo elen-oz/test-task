@@ -105,7 +105,7 @@ const CartPage = () => {
                           </Text>{' '}
                           {/* Нумерация элементов */}
                           <Image
-                            objectFit='cover'
+                            objectFit='contain'
                             maxW={{ base: '100%', sm: '200px' }}
                             src={item.image}
                             alt='Product image'
