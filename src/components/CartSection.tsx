@@ -18,8 +18,8 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons';
-import { type Product } from '../models';
 import { formatNumber } from '../utils';
+import { type Product } from '../models';
 
 type Props = {
   products: Product[];
@@ -35,10 +35,9 @@ const CartSection = (props: Props) => {
   return (
     <Box mx='auto' h='100vh' overflow='scroll'>
       <HStack p={3} fontSize='4xl'>
-        <Text as='h1' fontSize='3xl' py='5' pl='6'>
+        <Text as='h1' fontSize='3xl' p='5'>
           Ваша корзина
         </Text>
-        <Spacer />
       </HStack>
       {isLoading && (
         <Box>

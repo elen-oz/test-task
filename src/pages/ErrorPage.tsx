@@ -1,5 +1,5 @@
-import { Center, Box, VStack, AbsoluteCenter } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { Center, Box, VStack, AbsoluteCenter } from '@chakra-ui/react';
 
 const ErrorPage = () => {
   return (

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { type CartState } from '../models';
 
@@ -99,8 +99,8 @@ const cartSlice = createSlice({
   },
 });
 
+export const getTotals = createAction('cart/getTotals');
 export const selectCartState = (state) => state.cart;
-
-export const { add, remove, decrease, getTotals } = cartSlice.actions;
+export const { add, remove, decrease } = cartSlice.actions;
 
 export default cartSlice.reducer;

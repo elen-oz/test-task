@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import CartPage from './pages/CartPage';
 import ErrorPage from './pages/ErrorPage';
 
