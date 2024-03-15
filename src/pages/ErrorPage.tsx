@@ -5,7 +5,7 @@ const ErrorPage = () => {
   return (
     <VStack h='100vh'>
       <AbsoluteCenter>
-        <Box fontSize='2xl'>404: Страница нен найдена</Box>
+        <Box fontSize='2xl'>404: Страница не найдена</Box>
         <Link to='/'>
           <Center as='u'>Вернуться на главную</Center>
         </Link>
