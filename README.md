@@ -1,5 +1,7 @@
 # VK task: Online shopping cart
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/269e62d1288f4b719ec22052c9db8417)](https://app.codacy.com/gh/elen-oz/test-task/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 This project is a - shopping cart developed using React, TypeScript and Redux Toolkit.
 
 ## Description
