@@ -88,7 +88,7 @@ const CartSection = (props: Props) => {
                       </GridItem>
                       <GridItem colSpan={[5, 5, 5, 5, 1]}>
                         <HStack spacing={2}>
-                          <Text fontSize='lg'>{formatNumber(item.price)}</Text>
+                          <Text fontSize='lg'>{formatNumber(item.price)}&#8381;</Text>
                           <Button
                             onClick={() => add(item)}
                             variant='solid'
