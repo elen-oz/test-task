@@ -60,7 +60,7 @@ const cartSlice = createSlice({
         state.cartProducts = remainedItems;
       }
     },
-    getTotals(state, action) {
+    getTotals(state) {
       const { total, quantity } = state.cartProducts.reduce(
         (cartTotal, cartItem) => {
           const { price, cartQuantity } = cartItem;
@@ -83,7 +83,7 @@ const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadProducts.pending, (state, action) => {
+      .addCase(loadProducts.pending, (state) => {
         state.status = 'pending';
       })
       .addCase(loadProducts.fulfilled, (state, action) => {
@@ -93,7 +93,7 @@ const cartSlice = createSlice({
           cartQuantity: 1,
         }));
       })
-      .addCase(loadProducts.rejected, (state, action) => {
+      .addCase(loadProducts.rejected, (state) => {
         state.status = 'rejected';
       });
   },
