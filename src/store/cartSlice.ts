@@ -1,19 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { type CartState, type Product } from '../models';
-
-const storedCartItems = localStorage.getItem('cartItems');
-let initialCartItems: Product[] = [];
-
-if (storedCartItems) {
-  initialCartItems = JSON.parse(storedCartItems);
-}
+import { type CartState } from '../models';
 
 const initialState: CartState = {
-  cartItems: initialCartItems,
+  cartProducts: [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
-  status: 'idle',
+  status: null,
 };
 
 export const loadProducts = createAsyncThunk('cart/loadProducts', async () => {
@@ -29,49 +22,46 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart(state, action) {
-      const itemIndex = state.cartItems.findIndex(
+    add(state, action) {
+      const itemIndex = state.cartProducts.findIndex(
         (item) => item.id === action.payload.id
       );
-      if (itemIndex >= 0) {
-        if (state.cartItems[itemIndex].cartQuantity < 10) {
-          state.cartItems[itemIndex].cartQuantity += 1;
-        } else {
-          return;
-        }
-      } else {
+
+      if (itemIndex < 0) {
         const tempProduct = { ...action.payload, cartQuantity: 1 };
-        state.cartItems.push(tempProduct);
+        state.cartProducts.push(tempProduct);
       }
 
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      if (state.cartProducts[itemIndex].cartQuantity >= 10) {
+        return;
+      }
+
+      state.cartProducts[itemIndex].cartQuantity += 1;
     },
-    removeFromCart(state, action) {
-      const nextCartItems = state.cartItems.filter(
+    remove(state, action) {
+      const remainedItems = state.cartProducts.filter(
         (cartItem) => cartItem.id !== action.payload.id
       );
 
-      state.cartItems = nextCartItems;
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      state.cartProducts = remainedItems;
     },
-    decreaseCart(state, action) {
-      const itemIndex = state.cartItems.findIndex(
+    decrease(state, action) {
+      const itemIndex = state.cartProducts.findIndex(
         (cartItem) => cartItem.id === action.payload.id
       );
 
-      if (state.cartItems[itemIndex].cartQuantity > 1) {
-        state.cartItems[itemIndex].cartQuantity -= 1;
-      } else if (state.cartItems[itemIndex].cartQuantity === 1) {
-        const nextCartItems = state.cartItems.filter(
+      if (state.cartProducts[itemIndex].cartQuantity > 1) {
+        state.cartProducts[itemIndex].cartQuantity -= 1;
+      } else if (state.cartProducts[itemIndex].cartQuantity === 1) {
+        const remainedItems = state.cartProducts.filter(
           (cartItem) => cartItem.id !== action.payload.id
         );
 
-        state.cartItems = nextCartItems;
+        state.cartProducts = remainedItems;
       }
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
     getTotals(state, action) {
-      const { total, quantity } = state.cartItems.reduce(
+      const { total, quantity } = state.cartProducts.reduce(
         (cartTotal, cartItem) => {
           const { price, cartQuantity } = cartItem;
           const itemTotal = price * cartQuantity;
@@ -98,7 +88,7 @@ const cartSlice = createSlice({
       })
       .addCase(loadProducts.fulfilled, (state, action) => {
         state.status = 'success';
-        state.cartItems = action.payload.map((product) => ({
+        state.cartProducts = action.payload.map((product) => ({
           ...product,
           cartQuantity: 1,
         }));
@@ -111,7 +101,6 @@ const cartSlice = createSlice({
 
 export const selectCartState = (state) => state.cart;
 
-export const { addToCart, removeFromCart, decreaseCart, getTotals } =
-  cartSlice.actions;
+export const { add, remove, decrease, getTotals } = cartSlice.actions;
 
 export default cartSlice.reducer;

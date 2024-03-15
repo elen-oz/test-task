@@ -7,13 +7,15 @@ export type Product = {
   cartQuantity: number;
 };
 
+export type CartProducts = Product[];
+
 export type ProductsState = {
-  items: Product[];
+  items: CartProducts;
   status: string | null;
 };
 
 export type CartState = {
-  cartItems: Product[];
+  cartProducts: CartProducts;
   cartTotalQuantity: number;
   cartTotalAmount: number;
   status: string | null;

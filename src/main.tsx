@@ -4,7 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 import store from './store/store.ts';
 import { loadProducts } from './store/cartSlice.ts';
-import theme from './theme.tsx';
+import theme from './theme.ts';
 import App from './App.tsx';
 
 store.dispatch(loadProducts());

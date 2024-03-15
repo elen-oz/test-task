@@ -23,20 +23,19 @@ import { formatNumber } from '../utils';
 
 type Props = {
   products: Product[];
-  addToCart: (product: Product) => void;
-  decreaseCart: (product: Product) => void;
-  removeFromCart: (product: Product) => void;
+  add: (product: Product) => void;
+  decrease: (product: Product) => void;
+  remove: (product: Product) => void;
   isLoading: boolean;
 };
 
 const CartSection = (props: Props) => {
-  const { products, addToCart, decreaseCart, removeFromCart, isLoading } =
-    props;
+  const { products, add, decrease, remove, isLoading } = props;
 
   return (
     <Box mx='auto' h='100vh' overflow='scroll'>
       <HStack p={3} fontSize='4xl'>
-        <Text as='h1' fontSize='3xl'>
+        <Text as='h1' fontSize='3xl' py='5' pl='6'>
           Ваша корзина
         </Text>
         <Spacer />
@@ -82,7 +81,7 @@ const CartSection = (props: Props) => {
                         '1fr',
                         'repeat(5, 1fr)',
                       ]}
-                      gap={4}
+                      gap={5}
                     >
                       <GridItem colSpan={[5, 5, 5, 5, 4]}>
                         <Heading size='md'>{item.title}</Heading>
@@ -92,16 +91,18 @@ const CartSection = (props: Props) => {
                         <HStack spacing={2}>
                           <Text fontSize='lg'>{formatNumber(item.price)}</Text>
                           <Button
-                            onClick={() => addToCart(item)}
+                            onClick={() => add(item)}
                             variant='solid'
                             colorScheme='blue'
                             size='xs'
                           >
                             <AddIcon />
                           </Button>
-                          <Text>{item.cartQuantity}</Text>
+                          <Text w='5' textAlign='center'>
+                            {item.cartQuantity}
+                          </Text>
                           <Button
-                            onClick={() => decreaseCart(item)}
+                            onClick={() => decrease(item)}
                             variant='solid'
                             size='xs'
                           >
@@ -113,7 +114,7 @@ const CartSection = (props: Props) => {
                   </CardBody>
                   <CardFooter>
                     <Spacer />
-                    <Button onClick={() => removeFromCart(item)}>
+                    <Button onClick={() => remove(item)}>
                       <DeleteIcon />
                     </Button>
                   </CardFooter>
